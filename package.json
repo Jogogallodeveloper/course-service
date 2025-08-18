@@ -28,6 +28,7 @@
     "@types/node": "24.2.1",
     "drizzle-kit": "^0.31.4",
     "drizzle-orm": "^0.44.4",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "vitest": "^3.2.4"
   }
 }
