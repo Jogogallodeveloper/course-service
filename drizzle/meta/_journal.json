@@ -22,6 +22,20 @@
       "when": 1755464445337,
       "tag": "0002_smiling_payback",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1755547734528,
+      "tag": "0003_fresh_tempest",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1755548327105,
+      "tag": "0004_slim_the_twelve",
+      "breakpoints": true
     }
   ]
 }
