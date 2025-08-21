@@ -1,4 +1,4 @@
-import { test, expect, beforeEach } from "vitest";
+import { test, expect, beforeEach, afterAll } from "vitest";
 import { randomUUID } from "crypto";
 import request from "supertest";
 import { server } from "../app.ts";
@@ -7,13 +7,15 @@ import { courses, enrollments, users } from "../database/schema.ts";
 import { db } from "../database/client.ts";
 
 //clear the dependent tables for each test
-// beforeEach(async () => {
-//   await db.delete(enrollments);
-//   await db.delete(courses);
-//   await db.delete(users);
-// });
+beforeEach(async () => {
+  await db.delete(enrollments);
+  await db.delete(courses);
+  await db.delete(users);
+});
 
-
+afterAll(async () => {
+    await server.close()
+})
 
 test("Get courses", async () => {
   await server.ready();
