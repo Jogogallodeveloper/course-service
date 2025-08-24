@@ -36,6 +36,20 @@
       "when": 1755548327105,
       "tag": "0004_slim_the_twelve",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1756066998721,
+      "tag": "0005_warm_pride",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1756068309191,
+      "tag": "0006_thin_risque",
+      "breakpoints": true
     }
   ]
 }

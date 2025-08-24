@@ -6,11 +6,36 @@ async function seed() {
   const usersInsert = await db
     .insert(users)
     .values([
-      { name: faker.person.fullName(), email: faker.internet.email() },
-      { name: faker.person.fullName(), email: faker.internet.email() },
-      { name: faker.person.fullName(), email: faker.internet.email() },
-      { name: faker.person.fullName(), email: faker.internet.email() },
-      { name: faker.person.fullName(), email: faker.internet.email() },
+      { 
+        name: faker.person.fullName(), 
+        email: faker.internet.email(),
+        password: '',
+        role: 'student' 
+      },
+      { 
+        name: faker.person.fullName(), 
+        email: faker.internet.email(),
+        password: '',
+        role: 'student'  
+      },
+      { 
+        name: faker.person.fullName(), 
+        email: faker.internet.email(),
+        password: '',
+        role: 'student'  
+      },
+      { 
+        name: faker.person.fullName(), 
+        email: faker.internet.email(),
+        password: '',
+        role: 'student'  
+      },
+      { 
+        name: faker.person.fullName(), 
+        email: faker.internet.email(),
+        password: '',
+        role: 'student'  
+      },
     ])
     .returning();
 
