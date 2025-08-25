@@ -8,9 +8,14 @@
     "db:seed": "node --env-file .env src/database/seed.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:migrate:test": "dotenv -e .env.test drizzle-kit migrate",
+    "db:seed:test": "dotenv -e .env.test tsx src/database/seed.ts",
+    "db:seed:dev": "SEED_ALLOW=1 dotenv -e .env tsx src/database/seed.ts",
     "db:studio": "drizzle-kit studio",
     "pretest": "dotenv -e .env.test drizzle-kit migrate",
-    "test": "dotenv -e .env.test vitest run --coverage"
+    "test": "dotenv -e .env.test vitest run --coverage",
+    "env:which:dev": "dotenv -e .env bash -lc 'echo $DATABASE_URL'",
+    "env:which:test": "dotenv -e .env.test bash -lc 'echo $DATABASE_URL'"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +24,7 @@
     "@fastify/swagger": "9.5.1",
     "@fastify/swagger-ui": "5.2.3",
     "@scalar/fastify-api-reference": "1.34.2",
+    "argon2": "^0.44.0",
     "fastify": "5.5.0",
     "fastify-type-provider-zod": "5.0.3",
     "pg": "^8.16.3",
@@ -34,6 +40,7 @@
     "drizzle-kit": "^0.31.4",
     "drizzle-orm": "^0.44.4",
     "supertest": "^7.1.4",
+    "tsx": "^4.20.5",
     "typescript": "5.9.2",
     "vitest": "^3.2.4"
   }

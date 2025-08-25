@@ -5,6 +5,7 @@ import { server } from "../app.ts";
 import { makeCourse } from "../tests/factories/make-course.ts";
 import { courses, enrollments, users } from "../database/schema.ts";
 import { db } from "../database/client.ts";
+import { hash } from "argon2";
 import { number } from "zod";
 
 //clear the dependent tables for each test
@@ -91,6 +92,9 @@ test("Left Join count the total enrollments by course", async () => {
   //Generate a unique identify
   const prefix = randomUUID();
 
+  // generate hash
+  const passwordHash = await hash("123456");
+
   //create courses
   const c1 = await makeCourse(`${prefix}-Node`);
   const c2 = await makeCourse(`${prefix}-JS`);
@@ -99,12 +103,38 @@ test("Left Join count the total enrollments by course", async () => {
   //create users
   const [u1] = await db
     .insert(users)
-    .values({ name: "U1", email: `{prefix}+u1@exemple.com` })
+    .values({
+      name: "U1",
+      email: `${prefix}+u1@exemple.com`,
+      password: passwordHash,
+    })
     .returning({ id: users.id });
 
   const [u2] = await db
     .insert(users)
-    .values({ name: "U2", email: `${prefix}+u1@example.com`})
+    .values({
+      name: "U2",
+      email: `${prefix}+u2@example.com`,
+      password: passwordHash,
+    })
+    .returning({ id: users.id });
+
+  const [u3] = await db
+    .insert(users)
+    .values({
+      name: "U3",
+      email: `${prefix}+u3@example.com`,
+      password: passwordHash,
+    })
+    .returning({ id: users.id });
+
+  const [u4] = await db
+    .insert(users)
+    .values({
+      name: "U4",
+      email: `${prefix}+u4@example.com`,
+      password: passwordHash,
+    })
     .returning({ id: users.id });
 
   // const [u3] = await db
@@ -131,7 +161,7 @@ test("Left Join count the total enrollments by course", async () => {
     res.body.courses.map((c: any) => [c.title, c.enrollments])
   );
 
-   //expect count of lefjoin
+  //expect count of lefjoin
   expect(countsByTitle[`${prefix}-Node`]).toBe(2);
   expect(countsByTitle[`${prefix}-JS`]).toBe(1);
   expect(countsByTitle[`${prefix}-Angular`]).toBe(0);
@@ -140,7 +170,7 @@ test("Left Join count the total enrollments by course", async () => {
   const uniqueTitles = new Set(res.body.courses.map((c: any) => c.title));
   expect(uniqueTitles.size).toBe(3);
 
-  // basic shape 
+  // basic shape
   res.body.courses.forEach((c: any) => {
     expect(c).toEqual({
       id: expect.any(String),
