@@ -47,11 +47,11 @@ export const loginRoute: FastifyPluginAsyncZod = async (server) => {
 
       //if the password does not march return 404 error
       if (!doesPasswordMatch) {
-        if (result.length === 0) {
+        //if (result.length === 0) {
           return reply.status(400).send({
             message: "Invalid Credentials",
           });
-        }
+        //}
       }
 
       return reply.status(200).send({ message: 'ok' });
