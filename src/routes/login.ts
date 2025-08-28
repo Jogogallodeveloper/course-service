@@ -1,9 +1,10 @@
 //Caio56@hotmail.com
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { db } from "../database/client.ts";
-import { courses, users } from "../database/schema.ts";
+import { courses, enrollments, users } from "../database/schema.ts";
+import jwt from 'jsonwebtoken'
 import { eq } from "drizzle-orm";
-import z from "zod";
+import {z} from "zod";
 import { verify } from "argon2";
 
 export const loginRoute: FastifyPluginAsyncZod = async (server) => {
@@ -14,12 +15,13 @@ export const loginRoute: FastifyPluginAsyncZod = async (server) => {
         tags: ["auth"],
         summary: "login",
         body: z.object({
-          email: z.email(),
-          password: z.string(),
+          email: z.string().email(),
+          password: z.string().min(1),
         }),
-        //   response: {
-        //     201: z.object({ courseId: z.uuid() }).describe('Curso criado com sucesso!')
-        //   }
+          response: {
+            200: z.object({ token: z.string() }),
+            400: z.object({ message: z.string() }),
+          }
       },
     },
     async (request, reply) => {
@@ -47,14 +49,21 @@ export const loginRoute: FastifyPluginAsyncZod = async (server) => {
 
       //if the password does not march return 404 error
       if (!doesPasswordMatch) {
-        //if (result.length === 0) {
-          return reply.status(400).send({
-            message: "Invalid Credentials",
-          });
-        //}
+        return reply.status(400).send({
+          message: "Invalid Credentials",
+        });
+      }
+      // check if JWT_SECRET exists
+      if (!process.env.JWT_SECRET) {
+        throw new Error("JWT_SECRET must be set");
       }
 
-      return reply.status(200).send({ message: 'ok' });
+      const token = jwt.sign(
+        { sub: user.id, role: user.role },
+        process.env.JWT_SECRET
+      );
+
+      return reply.status(200).send({ token });
     }
   );
 };
