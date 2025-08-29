@@ -1,8 +1,9 @@
 POST http://localhost:3333/courses
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNjdmYWNjMS1kYjhiLTQwZWYtYWIxZC04YmNkZGFmM2ExZjgiLCJyb2xlIjoibWFuYWdlciIsImlhdCI6MTc1NjQ1NzQ1OX0.XLfiLCELpBBV5pEOkDo9MGkSsEwDJHxSMMJdJ3_R9UY
 
 {
-  "title": "Curso de FullStack Developer"
+  "title": "Curso de UX/UI Designer"
 }
 
 ###
@@ -13,7 +14,8 @@ GET http://localhost:3333/sessions
 GET http://localhost:3333/courses?orderBy=title
 ###
 
-GET http://localhost:3333/courses/ed08672b-d8cd-473c-b6fd-3b8c9ccb457d
+GET http://localhost:3333/courses/c73228a7-b598-4bc2-8eed-7fc92865031f
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjhhYjRkZC0yZmM1LTQzMTMtYjY0OS04YjU3ZTNhM2FlMTciLCJyb2xlIjoic3R1ZGVudCIsImlhdCI6MTc1NjQxMTA4Nn0.Md2B_aDYyvDUtTjEqmJviEHzECT86KXpZsN3Zj5YRfE
 
 ###
 
@@ -25,6 +27,6 @@ POST http://localhost:3333/sessions
 Content-Type: application/json
 
 {
-"email":"Valentina.Santos63@hotmail.com",
+"email":"JoaoPedro_Melo5@gmail.com",
 "password": "123456"
 }

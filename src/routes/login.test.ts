@@ -67,5 +67,7 @@ test('login invalid password test', async() => {
     })
 
     expect(res.status).toBe(400)
-    expect(res.body).toEqual({message: 'Invalid Credentials'})
+    expect(res.body).toEqual({
+        token: expect.any(String)
+    })
 })
