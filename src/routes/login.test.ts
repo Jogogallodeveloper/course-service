@@ -2,10 +2,11 @@ import { test, expect, afterAll } from 'vitest'
 import  request from 'supertest'
 import { server } from '../app.ts'
 import { faker } from '@faker-js/faker'
-import { makeUser } from '../tests/factories/make-user.ts'
+import { makeAuthenticatedUser, makeUser } from '../tests/factories/make-user.ts'
 import { beforeEach } from 'node:test'
 import { users } from '../database/schema.ts'
 import { db } from '../database/client.ts'
+
 
 //clear the user table before each test
 beforeEach(async () => {
@@ -20,10 +21,13 @@ afterAll(async () => {
 test('login', async () => {
     await server.ready()
 
+    //const { token } = await makeAuthenticatedUser('manager')
+
     const { user, passwordBeforeHash } = await makeUser()
 
     const response = await request(server.server)
     .post('/sessions')
+    //.set('Authorization', token)
     .set('Content-Type', 'application/json')
     .send({
         email: user.email,
@@ -31,18 +35,18 @@ test('login', async () => {
     })
 
     expect(response.status).toEqual(200)
-    expect(response.body).toEqual({
-        message: 'ok',
-    })
+    expect(response.body).toEqual({ token: expect.any(String) })
 })
 
 /** ❌ user not exists */
 test('login failed user not found', async() => {
     await server.ready()
 
+    //const { token } = await makeAuthenticatedUser('manager')
+
     const res = await request(server.server)
     .post('/sessions')
-    .set('Content-type', 'application/json')
+    .set('Content-Type', 'application/json')
     .send({
         email: 'ghost@example.com',
         password: 'whatever'
@@ -58,16 +62,17 @@ test('login invalid password test', async() => {
 
     const { user } = await makeUser()
 
+    //const { token } = await makeAuthenticatedUser('manager')
+
     const res = await request(server.server)
     .post('/sessions')
-    .set('Content-type', 'application/json')
+    //.set('Authorization', token)
+    .set('Content-Type', 'application/json')
     .send({
         email: user.email,
         password: 'wrong-password'
     })
 
     expect(res.status).toBe(400)
-    expect(res.body).toEqual({
-        token: expect.any(String)
-    })
+    expect(res.body).toEqual({ message: 'Invalid Credentials' })
 })
