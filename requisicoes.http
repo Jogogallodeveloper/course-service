@@ -1,9 +1,9 @@
 POST http://localhost:3333/courses
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNjdmYWNjMS1kYjhiLTQwZWYtYWIxZC04YmNkZGFmM2ExZjgiLCJyb2xlIjoibWFuYWdlciIsImlhdCI6MTc1NjQ1NzQ1OX0.XLfiLCELpBBV5pEOkDo9MGkSsEwDJHxSMMJdJ3_R9UY
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNjdmYWNjMS1kYjhiLTQwZWYtYWIxZC04YmNkZGFmM2ExZjgiLCJyb2xlIjoibWFuYWdlciIsImlhdCI6MTc1Njc2MDY5OX0.FxW59P0rxq5QlsjraXJlBsSuFYzs3WNPX4WGqMXnPds
 
 {
-  "title": "Curso de UX/UI Designer"
+  "title": "Course Developer Backend C#"
 }
 
 ###
