@@ -6,6 +6,18 @@
 app = 'course-service'
 primary_region = 'gru'
 
+[env]
+  PORT = "3333" 
+
+  [checks]
+  [checks.status]
+    type = "http"
+    port = 3333
+    method = "get"
+    path = "/healthz"
+    interval = "10s"
+    timeout = "2s"
+
 [build]
 
 [http_service]
