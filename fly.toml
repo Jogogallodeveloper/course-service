@@ -1,22 +1,10 @@
-# fly.toml app configuration file generated for course-service on 2025-09-02T21:36:55Z
+# fly.toml app configuration file generated for course-service-baydyq on 2025-09-02T22:02:24Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'course-service'
-primary_region = 'gru'
-
-[env]
-  PORT = "3333" 
-
-  [checks]
-  [checks.status]
-    type = "http"
-    port = 3333
-    method = "get"
-    path = "/healthz"
-    interval = "10s"
-    timeout = "2s"
+app = 'course-service-baydyq'
+primary_region = 'gig'
 
 [build]
 
