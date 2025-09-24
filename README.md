@@ -134,4 +134,4 @@ sequenceDiagram
 - Docs não aparecem em `/docs`: garanta `NODE_ENV=development` no `.env` e reinicie o servidor.
 
 ## Licença
-ISC (ver `package.json`).
+ISC (Este projeto está licenciado sob a [ISC License](./LICENSE).).
