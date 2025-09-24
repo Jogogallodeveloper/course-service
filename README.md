@@ -169,20 +169,19 @@ You can test the endpoints using the `requisicoes.http` file
 
 ```mermaid
 graph TD
-    A[POST /courses] --> B[Validate body (Zod)]
-    B --> C[Insert into DB (Drizzle)]
-    C --> D[Return courseId (UUID)]
-    
-    E[GET /courses] --> F[Fetch all from DB]
+    A[POST /courses] --> B[Validate body]
+    B --> C[Insert into DB]
+    C --> D[Return courseId]
+
+    E[GET /courses] --> F[Fetch all courses]
     F --> G[Return JSON]
-    
+
     H[GET /courses/:id] --> I[Find course by ID]
     I --> J{Found?}
-    J -- Yes --> K[Return course]
-    J -- No --> L[Return 404]
+    J -->|Yes| K[Return course]
+    J -->|No| L[Return 404]
 ```
 
----
 
 ## 📜 Available Scripts
 
@@ -211,3 +210,4 @@ graph TD
 ## 📄 License
 
 This project is licensed under the [ISC License](./LICENSE).
+git checkout -b docs/full-readme-update
