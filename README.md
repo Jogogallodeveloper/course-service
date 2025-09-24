@@ -181,8 +181,6 @@ graph TD
     J -->|Yes| K[Return course]
     J -->|No| L[Return 404]
 ```
-
-
 ## 📜 Available Scripts
 
 | Command               | Description                              |
