@@ -1,137 +1,213 @@
-# course-service (API REST)
+# 📚 Course Service — RESTful API
 
-API simples em Node.js + TypeScript usando Fastify, Drizzle ORM (PostgreSQL) e Zod. Inclui documentação Swagger/Scalar em ambiente de desenvolvimento.
+A simple and educational API built with **Node.js + TypeScript** using **Fastify**, **Drizzle ORM** (PostgreSQL), and **Zod**.  
+It provides a basic course management system, including creation, listing, and lookup by ID.
 
-## Requisitos
-- Node.js 22+
-- Docker e Docker Compose
-- npm (ou outro gerenciador, mas o projeto usa `package-lock.json`)
+> 📌 Future iterations will include **user management** and **course enrollments** (many-to-many).
 
-## Tecnologias
-- Fastify 5
-- TypeScript
-- Drizzle ORM + PostgreSQL
-- Zod (validação)
-- Swagger/OpenAPI + Scalar API Reference (em `/docs` quando `NODE_ENV=development`)
+---
 
-## Configuração
-1. Clone o repositório e acesse a pasta do projeto.
-2. Instale as dependências:
+## 🚀 What This Project Does
+
+This API allows you to:
+
+- Register new courses (`POST /courses`)
+- List all courses (`GET /courses`)
+- Get course details by ID (`GET /courses/:id`)
+
+Built with clean structure and modern tools for learning and portfolio purposes.
+
+---
+
+## ⚙️ Requirements
+
+- Node.js **v22+**
+- Docker + Docker Compose
+- `npm` (or compatible package manager)
+
+---
+
+## 🧰 Tech Stack
+
+- **Fastify 5** – Web server
+- **TypeScript** – Static typing
+- **Drizzle ORM** – PostgreSQL ORM
+- **Zod** – Schema validation
+- **Swagger/OpenAPI + Scalar** – Auto API docs at `/docs`
+- **Docker Compose** – Local dev environment
+
+---
+
+## 🔧 Setup Instructions
+
+### 1. Clone the project
+
+```bash
+git clone https://github.com/Jogogallodeveloper/course-service.git
+cd course-service
+```
+
+### 2. Install dependencies
+
 ```bash
 npm install
 ```
-3. Suba o banco Postgres com Docker:
+
+### 3. Start PostgreSQL via Docker
+
 ```bash
 docker compose up -d
 ```
-4. Crie um arquivo `.env` na raiz com:
-```bash
-# URL do banco (Docker local padrão)
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/desafio
 
-# Ativa docs em /docs
+### 4. Create a `.env` file at the project root:
+
+```env
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/desafio
 NODE_ENV=development
 ```
-5. Rode as migrações (Drizzle):
+
+> Optional: create `.env.test` for test environments.
+
+### 5. Run database migrations
+
 ```bash
 npm run db:migrate
 ```
-(opcional) Para inspecionar o schema/estado com o Drizzle Studio:
+
+### 6. (Optional) Open Drizzle Studio to inspect schema:
+
 ```bash
 npm run db:studio
 ```
 
-## Executando o servidor
+---
+
+## ▶️ Running the Server
+
 ```bash
 npm run dev
 ```
-- Porta padrão: `http://localhost:3333`
-- Logs legíveis habilitados
-- Documentação da API (em dev): `http://localhost:3333/docs`
 
-## Endpoints
-Base URL: `http://localhost:3333`
+- API URL: `http://localhost:3333`
+- API Docs: `http://localhost:3333/docs` (dev mode only)
 
-- POST `/courses`
-  - Cria um curso
-  - Body (JSON):
-    ```json
-    { "title": "Curso de Docker" }
-    ```
-  - Respostas:
-    - 201: `{ "courseId": "<uuid>" }`
+---
 
-- GET `/courses`
-  - Lista todos os cursos
-  - 200: `{ "courses": [{ "id": "<uuid>", "title": "..." }] }`
+## 📬 API Endpoints
 
-- GET `/courses/:id`
-  - Busca um curso pelo ID
-  - Parâmetros: `id` (UUID)
-  - Respostas:
-    - 200: `{ "course": { "id": "<uuid>", "title": "...", "description": "... | null" } }`
-    - 404: vazio
+### `POST /courses`
+Create a new course
 
-Há um arquivo `requisicoes.http` com exemplos prontos (compatível com extensões de REST Client).
-
-## Modelos (schema)
-Tabelas principais definidas em `src/database/schema.ts`:
-- `courses`
-  - `id` (uuid, pk, default random)
-  - `title` (text, único, obrigatório)
-  - `description` (text, opcional)
-- `users` (exemplo para estudos)
-  - `id` (uuid, pk, default random)
-  - `name` (text, obrigatório)
-  - `email` (text, único, obrigatório)
-
-## Fluxo principal (Mermaid)
-
-```mermaid
-sequenceDiagram
-  participant C as Client
-  participant S as Fastify Server
-  participant V as Zod Validator
-  participant DB as Drizzle + PostgreSQL
-
-  C->>S: POST /courses {title}
-  S->>V: Validar body
-  V-->>S: OK ou Erro 400
-  alt válido
-    S->>DB: INSERT INTO courses (title)
-    DB-->>S: {id}
-    S-->>C: 201 {courseId}
-  else inválido
-    S-->>C: 400
-  end
-
-  C->>S: GET /courses
-  S->>DB: SELECT id,title FROM courses
-  DB-->>S: lista
-  S-->>C: 200 {courses: [...]} 
-
-  C->>S: GET /courses/:id
-  S->>V: Validar param id (uuid)
-  V-->>S: OK ou Erro 400
-  alt encontrado
-    S->>DB: SELECT * FROM courses WHERE id=...
-    DB-->>S: course
-    S-->>C: 200 {course}
-  else não encontrado
-    S-->>C: 404
-  end
+```json
+{ "title": "Docker Fundamentals" }
 ```
 
-## Scripts
-- `npm run dev`: inicia o servidor com reload e carrega variáveis de `.env`
-- `npm run db:generate`: gera artefatos do Drizzle a partir do schema
-- `npm run db:migrate`: aplica migrações no banco
-- `npm run db:studio`: abre o Drizzle Studio
+Response:
+```json
+{ "courseId": "uuid" }
+```
 
-## Dicas e solução de problemas
-- Conexão recusada ao Postgres: confirme `docker compose up -d` e que a porta `5432` não está em uso.
-- Variável `DATABASE_URL` ausente: verifique seu `.env`. O Drizzle exige essa variável para `db:generate`, `db:migrate` e `db:studio`.
-- Docs não aparecem em `/docs`: garanta `NODE_ENV=development` no `.env` e reinicie o servidor.
+---
 
-## Licença
-ISC (Este projeto está licenciado sob a [ISC License](./LICENSE).).
+### `GET /courses`
+List all courses
+
+```json
+{
+  "courses": [
+    { "id": "uuid", "title": "..." },
+    ...
+  ]
+}
+```
+
+---
+
+### `GET /courses/:id`
+Retrieve a course by ID
+
+Success:
+```json
+{
+  "course": {
+    "id": "uuid",
+    "title": "...",
+    "description": "..." | null
+  }
+}
+```
+
+Error:
+- `404 Not Found`: empty body
+
+---
+
+## 🗃️ Database Models
+
+Defined in `src/database/schema.ts`
+
+### `courses`
+- `id`: UUID, PK, auto-generated
+- `title`: text, required, unique
+- `description`: text, optional
+
+### `users` (for study/testing)
+- `id`: UUID, PK
+- `name`: text, required
+- `email`: text, required, unique
+
+---
+
+## 🧪 REST Client File
+
+You can test the endpoints using the `requisicoes.http` file  
+(compatible with REST Client VSCode extension).
+
+---
+
+## 📈 API Flow (Mermaid Diagram)
+
+```mermaid
+graph TD
+    A[POST /courses] --> B[Validate body (Zod)]
+    B --> C[Insert into DB (Drizzle)]
+    C --> D[Return courseId (UUID)]
+    
+    E[GET /courses] --> F[Fetch all from DB]
+    F --> G[Return JSON]
+    
+    H[GET /courses/:id] --> I[Find course by ID]
+    I --> J{Found?}
+    J -- Yes --> K[Return course]
+    J -- No --> L[Return 404]
+```
+
+---
+
+## 📜 Available Scripts
+
+| Command               | Description                              |
+|-----------------------|------------------------------------------|
+| `npm run dev`         | Start dev server with auto-reload        |
+| `npm run db:migrate`  | Run DB migrations with Drizzle           |
+| `npm run db:generate` | Generate Drizzle artifacts               |
+| `npm run db:studio`   | Open Drizzle Studio GUI (optional)       |
+
+---
+
+## 🧠 Tips & Troubleshooting
+
+- ❌ **Connection refused to Postgres?**  
+  Make sure `docker compose up -d` is running and port 5432 is free.
+
+- ❌ **Missing `DATABASE_URL`?**  
+  Ensure your `.env` file is configured correctly.
+
+- ❌ **Docs not showing at `/docs`?**  
+  Set `NODE_ENV=development` and restart the server.
+
+---
+
+## 📄 License
+
+This project is licensed under the [ISC License](./LICENSE).
